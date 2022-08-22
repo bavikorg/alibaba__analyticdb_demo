@@ -28,14 +28,14 @@ public class AdsQueryService {
     public static final int DRUID_DS_PARM_TIME_BETWEEN_EVICTION_RUNS_MILLIS = 2000;
     public static final int DRUID_DS_PARM_MIN_EVICTABLE_IDLE_TIME_MILLIS = 600000;
     public static final int DRUID_DS_PARM_MAX_EVICTABLE_IDLE_TIME_MILLIS = 900000;
-    public static final String DRUID_DS_PARM_VALIDATION_QUERY = "show status like '%Service_Status%'";
+    public static final /*~~>*/String DRUID_DS_PARM_VALIDATION_QUERY = "show status like '%Service_Status%'";
     public static final boolean DRUID_DS_PARM_TEST_WHILE_IDLE = true;
     public static final boolean DRUID_DS_PARM_TEST_ON_BORROW = false;
     public static final boolean DRUID_DS_PARM_TEST_ON_RETURN = false;
     public static final boolean DRUID_DS_PARM_REMOVE_ABANDONED = true;
     public static final int DRUID_DS_PARM_REMOVE_ABANDONED_TIMEOUT = 180;
 
-    private Map<String, DruidDataSource> dataSources = null;
+    private Map</*~~>*/String, DruidDataSource> dataSources = null;
 
     /**
      * Construct and register ADS database data sources.
@@ -44,11 +44,11 @@ public class AdsQueryService {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public AdsQueryService(Map<String, List<String>> jdbcDataSources) throws ClassNotFoundException, SQLException {
-        dataSources = new HashMap<String, DruidDataSource>();
-        for (Entry<String, List<String>> jdbcDataSource : jdbcDataSources.entrySet()) {
-            String database = jdbcDataSource.getKey();
-            String jdbcURL = jdbcDataSource.getValue().get(0);
+    public AdsQueryService(Map</*~~>*/String, List</*~~>*/String>> jdbcDataSources) throws ClassNotFoundException, SQLException {
+        dataSources = new HashMap</*~~>*/String, DruidDataSource>();
+        for (Entry</*~~>*/String, List</*~~>*/String>> jdbcDataSource : jdbcDataSources.entrySet()) {
+            /*~~>*/String database = jdbcDataSource.getKey();
+            /*~~>*/String jdbcURL = jdbcDataSource.getValue().get(0);
             dataSources.put(database, createDruidDataSource(jdbcDataSource.getValue()));
             log.info("ADS_DATA_SOURCE_REGISTER database=" + database + " URL=" + jdbcURL);
         }
@@ -63,9 +63,9 @@ public class AdsQueryService {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    private DruidDataSource createDruidDataSource(List<String> jdbcURLParams)
+    private DruidDataSource createDruidDataSource(List</*~~>*/String> jdbcURLParams)
             throws ClassNotFoundException, SQLException {
-        String driverClassName = "com.mysql.jdbc.Driver";
+        /*~~>*/String driverClassName = "com.mysql.jdbc.Driver";
         Class.forName(driverClassName);
 
         DruidDataSource ds = new DruidDataSource();
@@ -98,15 +98,15 @@ public class AdsQueryService {
      * 
      * @param query
      */
-    public void executeQuery(String query) {
+    public void executeQuery(/*~~>*/String query) {
         boolean executeSuccess = false;
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
 
         // Try to execute query on registered data sources in the registering order.
-        for (Entry<String, DruidDataSource> dsEntry : dataSources.entrySet()) {
-            String database = dsEntry.getKey();
+        for (Entry</*~~>*/String, DruidDataSource> dsEntry : dataSources.entrySet()) {
+            /*~~>*/String database = dsEntry.getKey();
             DruidDataSource ds = dsEntry.getValue();
             try {
                 conn = ds.getConnection();
@@ -165,8 +165,8 @@ public class AdsQueryService {
     }
 
     // For test.
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Map<String, List<String>> jdbcDataSources = new HashMap<String, List<String>>();
+    public static void main(/*~~>*/String[] args) throws ClassNotFoundException, SQLException {
+        Map</*~~>*/String, List</*~~>*/String>> jdbcDataSources = new HashMap</*~~>*/String, List</*~~>*/String>>();
         jdbcDataSources.put("ads_db_1", Arrays.asList(
                 "jdbc:mysql://ads_db_1-xxxx-cn-hz.xxx.com:10001/ads_db_1?characterEncoding=UTF-8", "user", "password"));
         jdbcDataSources.put("ads_db_2", Arrays.asList(
